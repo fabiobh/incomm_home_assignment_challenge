@@ -10,25 +10,29 @@ import XCTest
 final class IncommIosHomeChallengeInterviewUITests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
     @MainActor
-    func testExample() throws {
+    func testUserListDisplay() throws {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Verify Navigation Bar title
+        let navBar = app.navigationBars["Users"]
+        XCTAssertTrue(navBar.waitForExistence(timeout: 5), "Users navigation bar should appear on launch")
+        
+        // Verify Collection View exists
+        let collectionView = app.collectionViews.firstMatch
+        XCTAssertTrue(collectionView.waitForExistence(timeout: 5), "User list collection view should be visible")
+        
+        // Note: Without mocking the network layer in the app structure (e.g. via Launch Arguments),
+        // we cannot deterministically assert specific cells unless we control the backend response.
+        // For this challenge, ensuring the UI hierarchy loads is the primary integration test.
     }
 
     @MainActor
